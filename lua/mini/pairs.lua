@@ -294,6 +294,12 @@ end
 MiniPairs.open = function(pair, neigh_pattern)
   if H.is_disabled() or not H.neigh_match(neigh_pattern) then return H.get_open_char(pair) end
 
+  -- Get the character to the right of cursor
+	local right_char = H.get_neigh("right")
+	if right_char:match("%S") ~= nil then
+		return H.get_open_char(pair)
+	end
+
   -- Temporarily redraw lazily for no cursor flicker due to `<Left>`.
   -- This can happen in a big file with tree-sitter highlighting enabled.
   local cache_lazyredraw = vim.o.lazyredraw
